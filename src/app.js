@@ -1,18 +1,18 @@
 var UI = require('ui');
 var ajax = require('ajax');
 
-var url = 'http://jsonplaceholder.typicode.com/posts/';
+var url = [
+  'http://pi.amcolash.com:3000/temp'
+];
 
 var main = new UI.Menu({
   sections: [{
-    items: [{
-      title: 'Pebble.js',
-      icon: 'images/menu_icon.png',
-      subtitle: 'Can do Menus'
-    }, {
-      title: 'Second Item',
-      subtitle: 'Subtitle Text'
-    }]
+    title: 'PebblePi',
+    items: [
+      {
+        title: 'Current Temp'
+      }
+    ]
   }]
 });
 
@@ -27,18 +27,18 @@ main.on('select', function(e) {
   
   ajax(
     {
-      url: url + (e.itemIndex + 1),
+      url: url[e.itemIndex],
       type: 'json'
     },
     
     function(data) {
       // Success!
-      console.log('Successfully fetched weather data!');
+      console.log('Successfully fetched data!');
       
       loading.hide();
       
       new UI.Card({
-        title: data.id + ': ' + data.title,
+        title: data.title,
         subtitle: data.body,
         scrollable: true
       }).show();
@@ -46,7 +46,7 @@ main.on('select', function(e) {
     
     function(error) {
       // Failure!
-      console.log('Failed fetching weather data: ' + error);
+      console.log('Failed fetching data: ' + error);
       
       loading.hide();
       
