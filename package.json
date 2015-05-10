@@ -1,0 +1,23 @@
+{
+  "name": "PebblePi",
+  "version": "1.0.0",
+  "description": "Server for PebblePi app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amcolash/PebblePi.git"
+  },
+  "author": "Andrew McOlash",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/amcolash/PebblePi/issues"
+  },
+  "homepage": "https://github.com/amcolash/PebblePi",
+  "dependencies": {
+    "express": "^4.12.3"
+  }
+}
