@@ -20,16 +20,26 @@ app.get('/temp', function(req, res) {
     temp = stdout.substring(5).replace("'", ' °').replace('\n', '');
     if (error !== null) {
       console.log('exec error: ' + error);
-      temp = 'Error getting current temp!';
+      res.status(500).send('Error getting current temp');
+    } else {
+      res.status(200).json({
+        title: 'Current Temperature',
+        body: temp
+      });
     }
 
-  res.json({
-    title: 'Current Temperature',
-    body: temp
   });
 
-  });
+});
 
+app.put('/user', function(req, res) {
+  if (req.headers.userid) {
+    console.log("POST");
+    res.status(200).send('Hooray, you are ' + req.headers.userid);
+  } else {
+    console.error('POST ERROR!');
+    res.status(404).send('User error');
+  }
 });
 
 var server = app.listen(3000, function () {
