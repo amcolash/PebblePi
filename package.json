@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/amcolash/PebblePi",
   "dependencies": {
-    "express": "^4.12.3"
+    "console-stamp": "^0.1.6",
+    "express": "^4.12.3",
+    "pebble-api": "^0.2.1"
   }
 }
