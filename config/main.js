@@ -31,7 +31,7 @@ $().ready(function () {
   $("#b-cancel").click(function () {
     console.log("Cancel");
     var return_to = getQueryParam('return_to', 'pebblejs://close#');
-    document.location = return_to + uncodeURIComponent('{}');
+    document.location = return_to + encodeURIComponent('{}');
   });
 
   $("#b-submit").click(function () {
