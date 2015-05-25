@@ -20,6 +20,8 @@
   "dependencies": {
     "console-stamp": "^0.1.6",
     "express": "^4.12.3",
+    "mongodb": "^2.0.31",
+    "monk": "^1.0.1",
     "pebble-api": "^0.2.1"
   }
 }
