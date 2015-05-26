@@ -66,6 +66,15 @@ app.put('/user', function(req, res) {
   }
 });
 
+/*
+var users = db.get('users');
+users.find({}, function (err, doc) {
+  for (var i = 0; i < doc.length; i++) {
+    console.log(doc[i]);
+  }
+});
+*/
+
 setInterval(function() {
   console.log('Updating temperature pin');
   var temp = '';
@@ -73,13 +82,8 @@ setInterval(function() {
   var exec = require('child_process').exec;
   exec('/opt/vc/bin/vcgencmd measure_temp', function(error, stdout, stderr) {
     temp = stdout.substring(5).replace("'", ' °').replace('\n', '');
-
-    var users = db.get('users');
-    users.find({}, function (err, doc) {
-      for (var i = 0; i < doc.length; i++) {
-        timeline.sendPin(doc[i].userid, 'temperature', 'Raspberry Pi Temp', temp);
-      }
-    });
+    // topics, id, title, body
+    timeline.sendSharedPin(['temperature'], 'temperaturePi2', 'Raspberry Pi 2 Temp', temp);
   });
 }, 600000);
 
