@@ -1,39 +1,21 @@
 {
     "appKeys": {},
     "capabilities": [
-        ""
+        "configurable"
     ],
     "companyName": "amcolash@gmail.com",
-    "longName": "PebblePi",
-    "projectType": "pebblejs",
+    "longName": "PebblePi - Timeline",
+    "projectType": "native",
     "resources": {
-        "media": [
-            {
-                "file": "images/menu_icon.png",
-                "menuIcon": true,
-                "name": "IMAGE_MENU_ICON",
-                "type": "png"
-            },
-            {
-                "file": "images/logo_splash.png",
-                "name": "IMAGE_LOGO_SPLASH",
-                "type": "png"
-            },
-            {
-                "file": "images/tile_splash.png",
-                "name": "IMAGE_TILE_SPLASH",
-                "type": "png"
-            },
-            {
-                "file": "fonts/UbuntuMono-Regular.ttf",
-                "name": "MONO_FONT_14",
-                "type": "font"
-            }
-        ]
+        "media": []
     },
-    "shortName": "PebblePi",
-    "uuid": "6e69c289-aca9-4343-908e-ff8b549efe2d",
-    "versionCode": 1,
+    "sdkVersion": "3",
+    "shortName": "PebblePi - Timeline",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "020b4d19-6976-4c68-bb08-6edec7a74913",
     "versionLabel": "1.0",
     "watchapp": {
         "watchface": false
