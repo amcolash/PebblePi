@@ -92,7 +92,7 @@ function updateStorage() {
   var storage = '';
 
   var exec = require('child_process').exec;
-  exec('df -Pm | grep /dev/root | awk {"print $4"}', function(error, stdout, stderr) {
+  exec("df -Pm | grep /dev/root | awk {'print $4'}", function(error, stdout, stderr) {
     storage = stdout.replace('\n', '') + ' mb';
     // topics, id, title, body
     timeline.sendSharedPin(['storage'], 'storagePi2', 'Raspberry Pi 2 Storage', storage);
