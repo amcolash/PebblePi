@@ -37,7 +37,7 @@ module.exports.sendSharedPin = function(topics, pinId, pinTitle, pinBody) {
       type: Timeline.Pin.LayoutType.GENERIC_PIN,
       tinyIcon: Timeline.Pin.Icon.STOCKS_EVENT,
       title: pinTitle,
-      body: pinBody
+      subtitle: pinBody
     })
   });
 

@@ -83,7 +83,7 @@ function updateTemperature() {
   exec('/opt/vc/bin/vcgencmd measure_temp', function(error, stdout, stderr) {
     temp = stdout.substring(5).replace("'", ' °').replace('\n', '');
     // topics, id, title, body
-    timeline.sendSharedPin(['temperature'], 'temperaturePi2', 'Raspberry Pi 2 Temp', temp);
+    timeline.sendSharedPin(['temperature'], 'temperaturePi2', 'Raspberry Pi 2 Temperature', temp);
   });
 }
 
@@ -102,7 +102,7 @@ function updateStorage() {
 setInterval(function() {
   updateTemperature();
   updateStorage();
-}, 60000);
+}, 600000);
 
 var server = app.listen(3000, function () {
   var host = server.address().address;
