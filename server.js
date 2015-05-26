@@ -75,7 +75,7 @@ users.find({}, function (err, doc) {
 });
 */
 
-setInterval(function() {
+function updateTemperature() {
   console.log('Updating temperature pin');
   var temp = '';
 
@@ -85,7 +85,24 @@ setInterval(function() {
     // topics, id, title, body
     timeline.sendSharedPin(['temperature'], 'temperaturePi2', 'Raspberry Pi 2 Temp', temp);
   });
-}, 600000);
+}
+
+function updateStorage() {
+  console.log('Updating storage pin');
+  var storage = '';
+
+  var exec = require('child_process').exec;
+  exec('df -Pm | grep /dev/root | awk {"print $4"}', function(error, stdout, stderr) {
+    storage = stdout.replace('\n', '') + ' mb';
+    // topics, id, title, body
+    timeline.sendSharedPin(['storage'], 'storagePi2', 'Raspberry Pi 2 Storage', storage);
+  });
+}
+
+setInterval(function() {
+  updateTemperature();
+  updateStorage();
+}, 60000);
 
 var server = app.listen(3000, function () {
   var host = server.address().address;
