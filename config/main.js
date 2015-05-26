@@ -46,11 +46,17 @@ $().ready(function () {
 
   //Set form values to whatever is passed in.
   if (window.location.search.substring(1) !== "") {
-    var obj = jQuery.parseJSON(decodeURIComponent(window.location.search.substring(1)));
-    for (var key in obj) {
-      console.log('key: ' + key + ', val: ' + obj[key]);
-      $("#" + [key]).val(obj[key]);
-      $("#" + [key]).val(obj[key]).slider("refresh");
+    var props = window.location.search.substring(1).split("&");
+    for (var i = 0; i < props.length; i++) {
+      var variable = props[i].split("=");
+      var name = variable[0];
+      var value = variable[1];
+      if (value === 'true' || value === 'false' ) {
+        $('#' + name).prop('checked', (value === 'true') ? true : false).checkboxradio('refresh');
+      } else {
+        $("#" + name).val(value);
+      }
+//      $("#" + [key]).val(obj[key]).slider("refresh");
     }
   }
 });
