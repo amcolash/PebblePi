@@ -48,6 +48,7 @@ $().ready(function () {
   if (window.location.search.substring(1) !== "") {
     var obj = jQuery.parseJSON(decodeURIComponent(window.location.search.substring(1)));
     for (var key in obj) {
+      console.log('key: ' + key + ', val: ' + obj[key]);
       $("#" + [key]).val(obj[key]);
       $("#" + [key]).val(obj[key]).slider("refresh");
     }
