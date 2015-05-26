@@ -99,6 +99,9 @@ function updateStorage() {
   });
 }
 
+updateTemperature();
+updateStorage();
+
 setInterval(function() {
   updateTemperature();
   updateStorage();
