@@ -60,6 +60,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       case KEY_ERROR:
         if (t->value->int32 == 0) {
           text_layer_set_text(text_layer, "Successfully rebooted");
+          window_stack_pop_all(true);
         } else {
           text_layer_set_text(text_layer, "Something went wrong...");
         }
