@@ -1,5 +1,6 @@
 var Timeline = require('pebble-api').Timeline;
 var key = require('./key.js');
+var debug = require('./debug.js').debug;
 var myKey = key.sandboxKey;
 
 var timeline = new Timeline({
@@ -17,14 +18,20 @@ module.exports.sendPin = function(userToken, pinId, pinTitle, pinBody) {
       title: pinTitle,
       body: pinBody
     })
-  });
+  }).addAction(new Timeline.Pin.Action({
+    title: 'Reboot Pi',
+    type: Timeline.Pin.ActionType.OPEN_WATCH_APP,
+    launchCode: 1
+  }));
 
   timeline.sendUserPin(userToken, pin, function (err) {
     if (err) {
       return console.error(err);
     }
 
-    console.log('Pin sent successfully!');
+    if (debug) {
+      console.log('Pin sent successfully!');
+    }
   });
 };
 
@@ -39,13 +46,19 @@ module.exports.sendSharedPin = function(topics, pinId, pinTitle, pinBody) {
       title: pinTitle,
       subtitle: pinBody
     })
-  });
+  }).addAction(new Timeline.Pin.Action({
+    title: 'Reboot Pi',
+    type: Timeline.Pin.ActionType.OPEN_WATCH_APP,
+    launchCode: 1
+  }));
 
   timeline.sendSharedPin(topics, pin, function (err) {
     if (err) {
       return console.error(err);
     }
 
-    console.log('Pin sent successfully!');
+    if (debug) {
+      console.log('Pin sent successfully!');
+    }
   });
 };
