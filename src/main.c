@@ -1,11 +1,10 @@
 #include <pebble.h>
 
+#define KEY_REBOOT 0
+#define KEY_ERROR 1
+  
 static Window *window;
 static TextLayer *text_layer;
-
-enum {
-  KEY_SEND_USER = 0x0,
-};
 
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
@@ -25,34 +24,63 @@ static void window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(text_layer));
 }
 
-static void send_user() {
-//   APP_LOG(APP_LOG_LEVEL_DEBUG, "Sending a user");
+static void reboot_pi() {
+  text_layer_set_text(text_layer, "Rebooting Pi...");
+  
   DictionaryIterator *iter;
 
-  /*
   if (iter == NULL) {
     APP_LOG(APP_LOG_LEVEL_DEBUG, "null iter");
     return;
   }
-  */
   
   app_message_outbox_begin(&iter);
   
-  int key = 78;
-  int value = 2113;
+  int key = KEY_REBOOT;
+  int value = 0;
   dict_write_int(iter, key, &value, sizeof(int), true);
   
   dict_write_end(iter);
   app_message_outbox_send();
 }
 
-static void select_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-  send_user();
+static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "Message received!");
+  
+  // Get the first pair
+  Tuple *t = dict_read_first(iterator);
+
+  // Process all pairs present
+  while (t != NULL) {
+    // Long lived buffer
+    static char s_buffer[64];
+
+    // Process this pair's key
+    switch (t->key) {
+      case KEY_ERROR:
+        if (t->value->int32 == 0) {
+          text_layer_set_text(text_layer, "Successfully rebooted");
+        } else {
+          text_layer_set_text(text_layer, "Something went wrong...");
+        }
+        break;
+    }
+
+    // Get next pair, if any
+    t = dict_read_next(iterator);
+  }
 }
 
-static void config_provider(void *context) {
-  // single click / repeat-on-hold config:
-  window_single_click_subscribe(BUTTON_ID_SELECT, select_single_click_handler);
+static void inbox_dropped_callback(AppMessageResult reason, void *context) {
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
+}
+
+static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+}
+
+static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
 }
 
 static void window_unload(Window *window) {
@@ -75,7 +103,22 @@ static void init(void) {
   
   window_stack_push(window, false);
   
+  // Register callbacks
+  app_message_register_inbox_received(inbox_received_callback);
+  app_message_register_inbox_dropped(inbox_dropped_callback);
+  app_message_register_outbox_failed(outbox_failed_callback);
+  app_message_register_outbox_sent(outbox_sent_callback);
+  
   app_message_open(256, 256);
+  
+  if (launch_reason() == APP_LAUNCH_TIMELINE_ACTION) {
+    uint32_t arg = launch_get_args();
+    switch(arg) {
+      case 1:
+        reboot_pi();
+        break;
+    }
+  }
 }
 
 static void deinit(void) {
@@ -84,7 +127,6 @@ static void deinit(void) {
 
 int main(void) {
   init();
-  window_set_click_config_provider(window, (ClickConfigProvider) config_provider);
   app_event_loop();
   deinit();
 }

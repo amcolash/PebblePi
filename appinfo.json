@@ -1,5 +1,8 @@
 {
-    "appKeys": {},
+    "appKeys": {
+        "KEY_ERROR": 1,
+        "KEY_REBOOT": 0
+    },
     "capabilities": [
         "configurable"
     ],
@@ -12,12 +15,12 @@
     "sdkVersion": "3",
     "shortName": "PebblePi - Timeline",
     "targetPlatforms": [
-        "aplite",
         "basalt"
     ],
     "uuid": "020b4d19-6976-4c68-bb08-6edec7a74913",
     "versionLabel": "1.0",
     "watchapp": {
+        "hiddenApp": true,
         "watchface": false
     }
 }

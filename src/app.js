@@ -1,21 +1,23 @@
 var myToken;
 var subscribed = [];
 
-/*
-function sendUser() {
-  console.log('Sending user');
-//   var user = {
-//     id: myToken
-//   };
-
+function rebootPi() {
+  console.log('Rebooting pi');
   var req = new XMLHttpRequest();
-  req.open('PUT', 'http://pi.amcolash.com:3000/user', true);
-//   req.setRequestHeader('Content-Type', 'application/json');
-//   req.send(user);
-  req.setRequestHeader('userid', myToken);
+  req.setRequestHeader('password', '12345');
+  req.onload = function(e) {
+    if (req.readyState === 4) {
+      if (req.status === 200) {
+        Pebble.sendAppMessage({'KEY_ERROR':0});
+      } else {
+        Pebble.sendAppMessage({'KEY_ERROR':1});
+      }
+    }
+  };
+  req.open('POST', 'http://pi.amcolash.com:3000/reboot', true);
+  
   req.send();
 }
-*/
 
 Pebble.getTimelineToken(
   function (token) {
@@ -30,8 +32,9 @@ Pebble.getTimelineToken(
 getSubscriptions();
 
 Pebble.addEventListener('appmessage', function(e) {
-//   console.log('Received message: ' + JSON.stringify(e.payload));
-//   subscribe('temperature');
+  console.log('Received message: ' + JSON.stringify(e.payload));
+  // Assume reboot for now...
+  rebootPi();
 });
 
 Pebble.addEventListener('showConfiguration', function(e) {
